@@ -1,0 +1,14 @@
+# Mage IO configuration for taxi-pipeline-hw3
+version: 0.1.1
+
+default:
+  # MLflow configuration
+  MLFLOW_TRACKING_URI: "http://mlflow:5000"  # Using docker service name
+  
+  # Data paths
+  DATA_PATH: "/home/src/data"
+  MODEL_PATH: "/home/src/models"
+  
+  # Pipeline settings
+  RANDOM_STATE: 42
+  TEST_SIZE: 0.2

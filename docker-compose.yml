@@ -1,0 +1,73 @@
+version: '3.8'
+
+services:
+  mage:
+    build: .
+    ports:
+      - "6789:6789"
+    mem_limit: 4g
+    volumes:
+      - .:/home/src     # source code directory
+      - ~/.ssh:/home/src/.ssh:ro
+      - ./mage_data:/home/src/mage_data  # writable data directory
+      - ./data:/home/src/data:ro  # taxi data directory (read-only)
+      - ./models:/home/src/models  # model output directory
+    environment:
+      - ENV=production
+      - PYTHONPATH=/home/src
+      - MAGE_DATABASE_CONNECTION_URL=sqlite:////home/src/mage_data/mage.db
+    depends_on:
+      mlflow:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:6789"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 60s
+    command: mage start /home/src
+    restart: always
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+    networks:
+      - taxi-pipeline
+
+  mlflow:
+    image: ghcr.io/mlflow/mlflow:latest
+    ports:
+      - "5000:5000"
+    volumes:
+      - ./mlflow_data:/mlflow/data
+      - ./data:/mlflow/data/data:ro  # taxi data directory (read-only)
+    user: root  # Temporary for debugging permissions
+    command: >
+      /bin/bash -c "
+      apt-get update &&
+      apt-get install -y curl &&
+      rm -rf /var/lib/apt/lists/* &&
+      mlflow server
+      --host 0.0.0.0
+      --port 5000
+      --backend-store-uri sqlite:////mlflow/data/mlflow.db
+      --default-artifact-root /mlflow/data/mlruns"
+    healthcheck:
+      test: ["CMD-SHELL", "curl -s http://localhost:5000 | grep -q '<title>MLflow</title>'"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+      start_period: 120s
+    restart: always
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+    networks:
+      - taxi-pipeline
+
+networks:
+  taxi-pipeline:
+    driver: bridge

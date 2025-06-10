@@ -1,4 +1,5 @@
 # Homework 3: ML Pipeline with Mage
+## (Solutions to Datatalksclub MlOps [homework 3](https://github.com/DataTalksClub/mlops-zoomcamp/blob/main/cohorts/2025/03-orchestration/homework.md))
 
 The goal of this homework is to create a simple training pipeline, use mlflow to track experiments and register best model, but use Mage for it.
 
@@ -9,17 +10,21 @@ You can use the same tool you used when completing the module, or choose a diffe
 
 What's the name of the orchestrator you chose?
 
+Answer: ✅ Mage
+
 ## Question 2. Version
 What's the version of the orchestrator?
+
+Answer: ✅ 0.9.63
 
 ## Question 3. Creating a pipeline
 Let's read the March 2023 Yellow taxi trips data.
 
 How many records did we load?
-- 3,003,766
-- 3,203,766
-- 3,403,766
-- 3,603,766
+- [ ] 3,003,766
+- [ ] 3,203,766
+- ✅ 3,403,766
+- [ ] 3,603,766
 
 (Include a print statement in your code)
 
@@ -48,10 +53,10 @@ def read_dataframe(filename):
 Let's apply to the data we loaded in question 3.
 
 What's the size of the result?
-- 2,903,766
-- 3,103,766
-- 3,316,216
-- 3,503,766
+- [ ] 2,903,766
+- [ ] 3,103,766
+- ✅ 3,316,216
+- [ ] 3,503,766
 
 ## Question 5. Train a model
 We will now train a linear regression model using the same code as in homework 1.
@@ -65,16 +70,21 @@ Let's now use it in the pipeline. We will need to create another transformation 
 What's the intercept of the model?
 
 Hint: print the intercept_ field in the code block
-- 21.77
-- 24.77
-- 27.77
-- 31.77
+- [ ] 21.77
+- ✅ 24.77
+- [ ] 27.77
+- [ ] 31.77
 
 ## Question 6. Register the model
 The model is trained, so let's save it with MLFlow.
 
 Find the logged model, and find MLModel file. What's the size of the model? (model_size_bytes field):
-- 14,534
-- 9,534
-- 4,534
-- 1,534 
+- [ ] 14,534
+- [ ] 9,534
+- ✅ 4,534
+- [ ] 1,534
+
+## Results Screenshots
+
+![Mage Results Part 1](images/taxi_Mage-results_hw3-1.png)
+![Mage Results Part 2](images/taxi_Mage-results_hw3-2.png) 
